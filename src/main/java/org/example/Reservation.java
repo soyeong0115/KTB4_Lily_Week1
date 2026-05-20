@@ -1,33 +1,35 @@
 package org.example;
 
-public class Reservation {
-    String theaterType;
-    int ticketPrice;
+import java.util.HashMap;
+import java.util.Map;
 
-    // 생성자 사용
+public class Reservation {
+    private Map<Integer, String> theaterMap = new HashMap<>();
+    private Map<Integer, Integer> ticketPriceMap = new HashMap<>();
+
+    private String theaterType;
+    private int ticketPrice;
+
+    // 생성자
     public Reservation(int inputTheaterType) {
-        setTheaterType(inputTheaterType);
+        // 상영관 목록 저장
+        theaterMap.put(1, "2D");
+        theaterMap.put(2, "IMAX");
+        theaterMap.put(3, "4DX");
+        theaterMap.put(4, "SCREENX");
+
+        // 티켓 가격 저장
+        ticketPriceMap.put(1, 14000);
+        ticketPriceMap.put(2, 18000);
+        ticketPriceMap.put(3, 18000);
+        ticketPriceMap.put(4, 16000);
+
+        setTheaterTypeInfo(inputTheaterType);
     }
 
-    public void setTheaterType(int inputTheaterType) {
-        switch (inputTheaterType) {
-            case 1:
-                theaterType = "2D";
-                ticketPrice = 14000;
-                break;
-            case 2:
-                theaterType = "IMAX";
-                ticketPrice = 18000;
-                break;
-            case 3:
-                theaterType = "4DX";
-                ticketPrice = 18000;
-                break;
-            case 4:
-                theaterType = "SCREENX";
-                ticketPrice = 16000;
-                break;
-        }
+    public void setTheaterTypeInfo(int inputTheaterType) {
+        theaterType = theaterMap.get(inputTheaterType);
+        ticketPrice = ticketPriceMap.get(inputTheaterType);
     }
 
     public String getTheaterType() {

@@ -1,33 +1,30 @@
 package org.example;
 
-public class Movie {
-    String movieTitle;
+import java.util.HashMap;
+import java.util.Map;
 
-    // 생성자 사용
+public class Movie {
+    private String movieTitle;
+    private Map<Integer, String> movieMap = new HashMap<>();
+
+    // 생성자
     public Movie(int inputMovieNumber) {
+        // 영화 목록 저장
+        movieMap.put(1, "악마는 프라다를 입는다2");
+        movieMap.put(2, "살목지");
+        movieMap.put(3, "프로젝트 헤일메리");
+        movieMap.put(4, "왕과 사는 남자");
+        movieMap.put(5, "군체");
+
         setMovieTitle(inputMovieNumber);
     }
 
+    // 영화 제목 설정
     public void setMovieTitle(int inputMovieNumber) {
-        switch (inputMovieNumber) {
-            case 1:
-                movieTitle = "악마는 프라다를 입는다2";
-                break;
-            case 2:
-                movieTitle = "살목지";
-                break;
-            case 3:
-                movieTitle = "프로젝트 헤일메리";
-                break;
-            case 4:
-                movieTitle = "왕과 사는 남자";
-                break;
-            case 5:
-                movieTitle = "군체";
-                break;
-        }
+        movieTitle = movieMap.get(inputMovieNumber);
     }
 
+    // 영화 제목 반환
     public String getMovieTitle() {
         return  movieTitle;
     }

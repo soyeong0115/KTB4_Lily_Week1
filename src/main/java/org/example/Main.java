@@ -28,7 +28,6 @@ public class Main {
         );
         int inputMovieNumber = sc.nextInt();
         Movie movie = new Movie(inputMovieNumber);
-        String movieTitle = movie.getMovieTitle();
         String endTime = movie.getEndTime(startTime);
 
         // 4. 예매 인원 입력받기
@@ -45,10 +44,8 @@ public class Main {
         );
         int inputTheaterType = sc.nextInt();
         Reservation reservation = new Reservation(inputTheaterType);
-        String theaterType = reservation.getTheaterType(); // 상영관 유형
-        int ticketPrice = reservation.getTicketPrice(); // 티켓 가격
         // 예매 정보 보여주기
-        reservation.showReservationInfo(movieTitle, date, startTime, endTime, peopleCount, theaterType);
+        reservation.showReservationInfo(movie.getMovieTitle(), date, startTime, endTime, peopleCount, reservation.getTheaterType());
 
 
         System.out.println("\n결제를 진행하겠습니다.");
@@ -60,7 +57,7 @@ public class Main {
         );
         int inputDiscountCoupon = sc.nextInt();
         Payment payment = new Payment(inputDiscountCoupon);
-        int finalPrice = payment.calculateFinalPrice(peopleCount, ticketPrice, inputDiscountCoupon);
+        int finalPrice = payment.calculateFinalPrice(peopleCount, reservation.getTicketPrice(), inputDiscountCoupon);
 
 
         // 결제 검증 로직
@@ -87,7 +84,7 @@ public class Main {
         // 영화 티켓 출력
         System.out.println("\n티켓을 출력 중입니다..🎟️");
         System.out.println("티켓 발권 완료!⭐️\n");
-        printer.printTicket(theaterType, movieTitle, date, startTime, endTime, peopleCount, seat, seats);
+        printer.printTicket(reservation.getTheaterType(), movie.getMovieTitle(), date, startTime, endTime, peopleCount, seat, seats);
 
     }
 }
