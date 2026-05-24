@@ -5,12 +5,13 @@ import java.util.Scanner;
 // 에디터 여백에 있는 <icon src="AllIcons.Actions.Execute"/> 아이콘을 클릭하세요.
 public class Main {
     public static void main(String[] args) {
+
+        System.out.println("안녕하세요! 영화 예매를 도와드릴게요.");
+
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("안녕하세요! 영화 예매를 도와드릴게요.\n");
-
         // 1. 영화 볼 날짜 입력받기
-        System.out.println("영화를 볼 날짜를 입력해주세요. (YYYY.MM.DD)");
+        System.out.println("\n영화를 볼 날짜를 입력해주세요. (YYYY.MM.DD)");
         String date = sc.nextLine();
 
         // 2. 영화 볼 시간 입력받기
@@ -48,7 +49,7 @@ public class Main {
         reservation.showReservationInfo(movie.getMovieTitle(), date, startTime, endTime, peopleCount, reservation.getTheaterType());
 
 
-        System.out.println("\n결제를 진행하겠습니다.");
+
         // 6. 할인쿠폰 입력받기
         System.out.println("적용할 할인쿠폰을 선택해주세요.");
         System.out.println(
@@ -59,14 +60,37 @@ public class Main {
         Payment payment = new Payment(inputDiscountCoupon);
         int finalPrice = payment.calculateFinalPrice(peopleCount, reservation.getTicketPrice(), inputDiscountCoupon);
 
+        // 결제 타이머 작동
+        TimerThread timerThread = new TimerThread();
+        timerThread.start();
 
         // 결제 검증 로직
         while(true) {
             System.out.println("\n결제하실 금액은 " + finalPrice + "입니다.");
             System.out.print("투입하실 금액을 입력해주세요. : ");
             int inputPrice = sc.nextInt();
+
+            // 시간 초과 확인
+            if (timerThread.isExpired()) {
+                System.out.println("\n예매 시간이 만료되었습니다 ㅠㅠ");
+                System.out.println("1. 다시 예매하기");
+                System.out.println("2. 프로그램 종료");
+
+                int select = sc.nextInt();
+
+                if (select == 1) {
+                    System.out.println("\n처음 화면으로 돌아갑니다.\n");
+                    main(args);
+                    return;
+                } else {
+                    System.out.println("영화 예매 프로그램을 종료합니다.");
+                    return;
+                }
+            }
             try {
                 payment.variatePayment(inputPrice);
+                // 결제 성공 시에만 타이머 종료
+                timerThread.interrupt();
                 break;
             } catch (RuntimeException e) {
                 System.out.println("결제금액이 부족합니다. 다시 결제해주세요.");
@@ -85,6 +109,5 @@ public class Main {
         System.out.println("\n티켓을 출력 중입니다..🎟️");
         System.out.println("티켓 발권 완료!⭐️\n");
         printer.printTicket(reservation.getTheaterType(), movie.getMovieTitle(), date, startTime, endTime, peopleCount, seat, seats);
-
     }
 }
